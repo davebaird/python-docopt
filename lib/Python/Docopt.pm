@@ -9,6 +9,8 @@ our @ISA       = qw(Exporter) ;
 our @EXPORT    = qw(docopt) ;
 our @EXPORT_OK = qw(get_synopsis) ;
 
+my $ERR_ARGV_PARSING_ERROR = 1 ;
+
 use Inline Python => <<'EOF';
 from docopt import docopt as py_docopt
 from contextlib import redirect_stdout
@@ -35,14 +37,14 @@ sub docopt {
     my $opts = wrapped_docopt( $doc, @args{qw(argv help version options_first)} ) ;
 
     if ( !ref($opts) ) {    # it's a message
-        if ( $opts =~ s/^SYSEXIT\n// ) {    # if starts with SYSEXIT, there's an error
+        if ( $opts =~ s/^SYSEXIT\n// ) {
             print STDERR $opts ;
-            exit(1) ;
+            exit($ERR_ARGV_PARSING_ERROR) ;
             }
-        elsif ( $opts =~ s/SYSEXIT\n\n$// ) {    # if ends with SYSEXIT, not an error (-v or -h)
-            print $opts ;
-            exit(0) ;
-            }
+
+        $opts =~ s/SYSEXIT\n\n$// ;    # not an error (-v or -h)
+        print $opts ;
+        exit(0) ;
         }
 
     foreach my $k ( keys $opts->%* ) {
