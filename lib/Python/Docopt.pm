@@ -74,38 +74,3 @@ sub get_synopsis () {
     }
 
 1 ;
-
-=head1 SYNOPSIS
-
-    use Python::Docopt ;
-    use Encode qw(decode_utf8) ;
-
-    @ARGV = map { decode_utf8( $_, 1 ) } @ARGV ;
-
-    my $usage = decode_utf8( usage() ) ;
-
-    my $opts = docopt( $usage ) ;
-
-    warn 'Too fast' if $opts->{'--speed'} > 20 ;
-
-
-    sub usage {
-        return <<EOF;
-    Naval Fate.
-
-    Usage:
-        naval_fate ship new <name>...
-        naval_fate ship <name> move <x> <y> [--speed=<kn>]
-        naval_fate ship shoot <x> <y>
-        naval_fate mine (set|remove) <x> <y> [--moored|--drifting]
-        naval_fate -h | --help
-        naval_fate -v | --version
-
-    Options:
-        -h --help     Show this screen.
-        -v --version  Show version.
-        --speed=<kn>  Speed in knots [default: 10].
-        --moored      Moored (anchored) mine.
-        --drifting    Drifting mine.
-    EOF
-        }
