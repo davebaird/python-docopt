@@ -1,0 +1,24 @@
+namespace : %
+    classes : %
+    functions : @
+        docopt
+        get_keys
+        get_val
+        get_hash
+        wrap_docopt
+filtered : <<EOV
+from docopt import docopt
+
+def get_keys(o):
+    return list(o.keys())
+
+def get_val(o, k):
+    return o[k]
+
+def get_hash(o):
+    return dict(o.items())
+
+def wrap_docopt(*args, **kwargs):
+    return dict(docopt(*args, **kwargs))
+
+EOV

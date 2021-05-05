@@ -1,0 +1,18 @@
+namespace : %
+    classes : %
+    functions : @
+        docopt
+        get_keys
+        get_val
+filtered : <<EOV
+from docopt import docopt
+
+def get_keys(o):
+    # print(o.keys())
+    k = o.keys()
+    return [k]
+
+def get_val(o, k):
+    return o[k]
+    # print(o[k])
+EOV

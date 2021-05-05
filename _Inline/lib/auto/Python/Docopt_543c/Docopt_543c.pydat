@@ -1,0 +1,12 @@
+namespace : %
+    classes : %
+    functions : @
+        py_docopt
+        wrap_docopt
+filtered : <<EOV
+from docopt import docopt as py_docopt
+
+def wrap_docopt(doc, argv=None, help=True, version=None, options_first=False):
+    opts = py_docopt(doc, argv, help, version, options_first)
+    return dict(opts)
+EOV

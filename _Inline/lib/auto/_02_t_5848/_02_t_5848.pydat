@@ -1,0 +1,12 @@
+namespace : %
+    classes : %
+    functions : @
+        docopt
+        wrap_docopt
+filtered : <<EOV
+from docopt import docopt
+
+def wrap_docopt(*args, **kwargs):
+    return dict(docopt(*args, **kwargs))
+
+EOV

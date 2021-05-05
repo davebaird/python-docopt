@@ -1,0 +1,5 @@
+namespace : %
+    classes : %
+    functions : @
+        docopt
+filtered : from docopt import docopt
