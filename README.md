@@ -6,7 +6,6 @@ Use the Python `docopt` utility in Perl.
 ```perl
 use Python::Docopt ;
 use Encode qw(decode_utf8) ;
-
 @ARGV = map { decode_utf8( $_, 1 ) } @ARGV ;
 
 sub usage {
