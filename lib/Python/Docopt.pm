@@ -48,12 +48,9 @@ sub docopt {
         }
 
     foreach my $k ( keys $opts->%* ) {
+        $opts->{$k} += 0 if blessed( $opts->{$k} ) ;    # convert Inline::Python::Boolean objects into Perlish booleans
 
-        # Convert Inline::Python::Boolean objects into Perlish booleans.
-        $opts->{$k} += 0 if blessed( $opts->{$k} ) ;
-
-        # I believe the angle-brackets should not be preserved.
-        next if $args{preserve_angle_brackets} ;
+        next if $args{preserve_angle_brackets} ;        # IMO the angle-brackets should not be preserved
         if ( $k =~ /^<(.+)>$/ ) {
             my $new_k = $1 ;
             $opts->{$new_k} = delete $opts->{$k} ;
