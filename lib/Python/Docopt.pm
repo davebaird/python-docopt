@@ -14,7 +14,7 @@ from docopt import docopt as py_docopt
 from contextlib import redirect_stdout
 import io
 
-def wrap_docopt(doc, argv=None, help=True, version=None, options_first=False):
+def wrapped_docopt(doc, argv=None, help=True, version=None, options_first=False):
     with io.StringIO() as buf, redirect_stdout(buf):
         try:
             opts = py_docopt(doc, argv, help, version, options_first)
@@ -32,7 +32,7 @@ sub docopt {
     $args{options_first} ||= '' ;
     $args{argv}          ||= \@ARGV ;
 
-    my $opts = wrap_docopt( $doc, @args{qw(argv help version options_first)} ) ;
+    my $opts = wrapped_docopt( $doc, @args{qw(argv help version options_first)} ) ;
 
     if ( !ref($opts) ) {    # it's a message
         if ( $opts =~ s/^SYSEXIT\n// ) {    # if starts with SYSEXIT, there's an error
