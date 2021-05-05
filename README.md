@@ -9,13 +9,6 @@ use Encode qw(decode_utf8) ;
 
 @ARGV = map { decode_utf8( $_, 1 ) } @ARGV ;
 
-my $usage = decode_utf8( usage() ) ;
-
-my $opts = docopt( $usage ) ;
-
-warn 'Too fast' if $opts->{'--speed'} > 20 ;
-
-
 sub usage {
     return <<EOF;
 Naval Fate.
@@ -36,4 +29,9 @@ Options:
     --drifting    Drifting mine.
 EOF
     }
+
+# -----
+my $opts = docopt( decode_utf8( usage() ) ;
+
+warn 'Too fast' if $opts->{'--speed'} > 20 ;
 ```
