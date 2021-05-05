@@ -1,5 +1,0 @@
-namespace : %
-    classes : %
-    functions : @
-        py_docopt
-filtered : from docopt import docopt as py_docopt
