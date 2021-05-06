@@ -26,10 +26,9 @@ use YAML ;
 use JSON ;
 
 my $usage = decode_utf8 usage() ;
+undef($usage) ;
 
-my $opts = docopt( $usage, version => decode_utf8('Naval Fate 2.0'), preserve_angle_brackets => 0 ) ;
-
-# my $opts = docopt( undef, version => 'Naval Fate 2.0' ) ;
+my $opts = docopt( $usage, version => decode_utf8('Naval Fate 2.0') ) ;
 
 say to_json( $opts, { pretty => 1 } ) ;
 
@@ -74,18 +73,19 @@ Usage:
 
 EOF
 
+    }
+
+
 =head1 SYNOPSIS
 
-    Usage:
-        my_program [-hso FILE] [(--quiet | --verbose)] [INPUT ...]
-        my_program -h
 
-        -h --help    show this
-        -s --sorted  sorted output
-        -o FILE      specify output file [default: ./test.txt]
-        --quiet      print less text
-        --verbose    print more text
+    my_program [-hso FILE] [(--quiet | --verbose)] [INPUT ...]
+    my_program -h
+
+    -h --help    show this
+    -s --sorted  sorted output
+    -o FILE      specify output file [default: ./test.txt]
+    --quiet      print less text
+    --verbose    print more text
 
 =cut
-
-    }

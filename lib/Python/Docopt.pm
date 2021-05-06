@@ -3,6 +3,7 @@ use warnings ;
 use strict ;
 
 use Scalar::Util qw(blessed) ;
+use Encode qw(decode_utf8) ;
 
 require Exporter ;
 our @ISA       = qw(Exporter) ;
@@ -30,6 +31,7 @@ EOF
 
 sub docopt {
     my ( $doc, %args ) = @_ ;
+    $doc //= get_synopsis() ;
     $args{help} //= 1 ;
     $args{options_first} ||= '' ;
     $args{argv}          ||= \@ARGV ;
@@ -68,8 +70,8 @@ sub get_synopsis () {
     $parser->output_string( \my $doc ) ;
     $parser->parse_file($0) ;
 
-    $doc =~ s/Usage:// ;    # Pod::Usage adds this
-    return $doc ;
+    # $doc =~ s/Usage:// ;    # Pod::Usage adds this
+    return decode_utf8($doc) ;
     }
 
 1 ;
