@@ -1,16 +1,18 @@
 package Python::Docopt ;
+
 use warnings ;
 use strict ;
 
 use Scalar::Util qw(blessed) ;
 use Encode qw(decode_utf8) ;
+use Clone qw(clone) ;
 
 require Exporter ;
 our @ISA       = qw(Exporter) ;
 our @EXPORT    = qw(docopt) ;
 our @EXPORT_OK = qw(get_synopsis) ;
 
-my $ERR_ARGV_PARSING_ERROR = 1 ;
+my $ERR_ARGV_PARSING_ERROR = 7 ;
 
 use Inline Python => <<'EOF';
 from docopt import docopt as py_docopt
@@ -28,6 +30,25 @@ def wrapped_docopt(doc, argv=None, help=True, version=None, options_first=False)
             return buf.getvalue()
 
 EOF
+
+# https://stackoverflow.com/a/68672920/2334574
+BEGIN {
+    # Unbuffer Python's output
+    $ENV{PYTHONUNBUFFERED} = 1 ;
+
+    # Unbuffer Perl's output
+    # select( ( select(STDOUT), $| = 1 )[0] ) ;
+    # select( ( select(STDERR), $| = 1 )[0] ) ;
+    STDOUT->autoflush ;
+    STDERR->autoflush ;
+    }
+
+
+END {
+    # Shut down the Python interpreter.
+    Inline::Python::py_finalize() ;
+    }
+
 
 sub docopt {
     my ( $doc, %args ) = @_ ;
@@ -52,15 +73,16 @@ sub docopt {
     foreach my $k ( keys $opts->%* ) {
         $opts->{$k} += 0 if blessed( $opts->{$k} ) ;    # convert Inline::Python::Boolean objects into Perlish booleans
 
-        next if $args{preserve_angle_brackets} ;        # IMO the angle-brackets should not be preserved
+        next if $args{preserve_angle_brackets} ;        # IMHO the angle-brackets should not be preserved
         if ( $k =~ /^<(.+)>$/ ) {
             my $new_k = $1 ;
             $opts->{$new_k} = delete $opts->{$k} ;
             }
         }
 
-    return $opts ;
+    return clone($opts) ;
     }
+
 
 sub get_synopsis () {
     require Pod::Usage ;
